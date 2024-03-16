@@ -1,0 +1,73 @@
+use Compit
+go
+
+create table dbo.Competitions
+(
+    ID                 uniqueidentifier not null
+        constraint Competitions_pk
+            primary key,
+    Name               varchar(150),
+    Date               datetime,
+    TimetablePerfomans text
+)
+go
+
+create table dbo.Trainer
+(
+    ID                uniqueidentifier not null
+        constraint PK_Trainer
+            primary key,
+    Name              varchar(50),
+    LastName          varchar(50),
+    MidlName          varchar(50),
+    Email             varchar(50),
+    PhoneNamber       char(20),
+    SydeiskaiCategory varchar(50)
+)
+go
+
+create table dbo.Sportsman
+(
+    ID           uniqueidentifier not null
+        constraint PK_Sportsman
+            primary key,
+    Name         varchar(50),
+    LastName     varchar(50),
+    MidlName     varchar(50),
+    Age          int,
+    DateBirth    date,
+    Gender       varchar,
+    [ID Trainer] uniqueidentifier
+        constraint Sportsman_Trainer_ID_fk
+            references dbo.Trainer
+)
+go
+
+create table dbo.Request
+(
+    ID               uniqueidentifier not null
+        constraint Request_pk
+            primary key,
+    [ID Sportsman]   uniqueidentifier
+        constraint Request_Sportsman_ID_fk
+            references dbo.Sportsman,
+    [ID Compitition] uniqueidentifier
+        constraint Request_Competitions_ID_fk
+            references dbo.Competitions,
+    RequestStatus    varchar(50),
+    DateCompitation  datetime
+)
+go
+
+create table dbo.Grades
+(
+    ID           uniqueidentifier not null
+        constraint Grades_pk
+            primary key,
+    [ID Request] uniqueidentifier
+        constraint Grades_Request_ID_fk
+            references dbo.Request,
+    [ID Rival]   uniqueidentifier,
+    Grade        float
+)
+go
